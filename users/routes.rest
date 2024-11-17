@@ -1,0 +1,39 @@
+POST http://localhost:3000/v1/users/signup
+Content-Type: application/json
+
+{
+    "username": "Minh Trung",
+    "email": "htmtrung2004@gmail.com",
+    "password": "@Minhtrung1408"
+}
+
+###
+
+POST http://localhost:3000/v1/users/signin
+Content-Type: application/json
+
+{
+    "email": "htmtrung2004@gmail.com",
+    "password": "@Minhtrung1408"
+}
+
+###
+POST http://localhost:3000/v1/users/refresh
+
+###
+POST http://localhost:3000/v1/users/signout
+
+###
+http://localhost:3000/v1/users/data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imh0bXRydW5nMjAwNEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IkBNaW5odHJ1bmcxNDA4IiwiaWF0IjoxNzI3OTYxMTM0fQ.Zh65ha73XlRrNLK8tmWybGuv7Uyf4YY_DoQWTy33r6Q
+
+###
+POST http://localhost:3000/v1/comments
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imh0bXRydW5nMjAwNEBnbWFpbC5jb20iLCJwYXNzd29yZCI6IkBNaW5odHJ1bmcxNDA4IiwidXNlcmlkIjoiYTlmYWM1M2EtNGJjZS00MWI1LTgwMGYtMjIyYjgxOTE5NDM3IiwiaWF0IjoxNzMwMjgzNjM1fQ.RmAngvYirAXZQOKirSfADaNewBcayVKUywdu4XZOxek
+
+{
+    "userid": "a9fac53a-4bce-41b5-800f-222b81919437",
+    "postid": "e4448502-ec6c-4c29-adb5-f96c98c04b04",
+    "content": "First Comment"
+}
