@@ -45,4 +45,33 @@ export class UserRepository {
 
         return query
     }
+
+    unfriend = async (user1id: string, user2id: string) => {
+        const text = ` WITH update_users AS (
+                        UPDATE users
+                        SET friends = array_remove(friends, $1)
+                        WHERE userid = $2
+                        )    
+                        UPDATE users
+                        SET friends = array_remove(friends, $2)
+                        WHERE userid = $1`
+        const values = [user1id, user2id]
+        const query = await pool.query(text, values)
+        console.log(query)
+
+        return query
+    }
+
+    getFriends = async (userid: string) => {
+        const text = `SELECT u.userid, u.username, u.profilepic
+                    FROM users u
+                    JOIN (
+                        SELECT UNNEST(friends) AS friend_id
+                        FROM users
+                        WHERE userid =$1
+                    ) f ON u.userid = f.friend_id`
+        const value = [userid]
+        const query = await pool.query(text, value)
+        return query.rows
+    }
 }

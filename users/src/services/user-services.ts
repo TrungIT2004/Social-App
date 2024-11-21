@@ -52,15 +52,27 @@ export class UserService {
         return 1
     }
 
-    sendFriendRequest = async (senderid: string, senderName: string, receiverid: string, receiverName: string) => {
+    getFriendRequests = async (userid: string) => {
+        try {
+            const friendRequests = await friendReqModel.find({ senderid: userid })
+            return friendRequests
+        } catch (err) {
+            console.log(err)
+            return 
+        }
+    }
+
+    sendFriendRequest = async (senderid: string, senderProfilePic: string, senderName: string, receiverid: string, receiverProfilePic: string, receiverName: string) => {
         const receiver = await this.UserRepository.findUserByID(receiverid)
 
         if (receiver.userid === receiverid && receiver.username === receiverName) {
             try {
             const newFriendRequest = await friendReqModel.create({
                 senderid,
+                senderProfilePic,
                 senderName,
                 receiverid,
+                receiverProfilePic,
                 receiverName,
             })
             console.log(newFriendRequest)

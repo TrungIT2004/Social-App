@@ -5,9 +5,15 @@ const friendReqSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    senderProfilePic: {
+        type: String,
+    },
     senderName: {
         type: String,
         required: true
+    },
+    receiverProfilePic: {
+        type: String,
     },
     receiverid: {
         type: String,

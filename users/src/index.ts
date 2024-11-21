@@ -8,6 +8,7 @@ import { authorizeToken } from "./api/middlewares"
 import postReactionRouter from "./api/routes/postReaction-route"
 import commentRouter from "./api/routes/comment-route"
 import commentReactionRouter from "./api/routes/commentReaction-route"
+import friendRouter from "./api/routes/friend-route"
 
 const startServer = () => {
     pool.connect()
@@ -31,6 +32,7 @@ app.use('/v1/users', router)
 
 
 app.use(authorizeToken)
+app.use('/v1/friends/', friendRouter)
 app.use('/v1/posts', postRouter)
 app.use('/v1/post-reactions/', postReactionRouter)
 app.use('/v1/comments', commentRouter)

@@ -1,7 +1,8 @@
 import { UserService } from "../../services/user-services"
-import e, { Request, Response } from 'express';
-import { createToken, verifyToken } from "../../utils";
-import { env } from "../../configs/config";
+import e, { Request, Response } from 'express'
+import { createToken, verifyToken } from "../../utils"
+import { env } from "../../configs/config"
+import { UserRepository } from "../../database/repository/user-repository"
 
 const userService = new UserService()
 
@@ -36,7 +37,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
         if (result === 1) res.status(404).json({"msg": "Account doesn't exists"})
         if (result === 2) res.status(401).json({"msg": "Password incorrect"})
         if (typeof result === "object") {
-            res.cookie('refreshToken', result.refreshToken, { secure: false, httpOnly: false })
+            res.cookie('refreshToken', result.refreshToken, { secure: false, httpOnly: true, sameSite: 'lax' })
             res.status(200).json({...rest})
         }
     } catch(err) {
@@ -46,6 +47,7 @@ export const signIn = async (req: Request, res: Response): Promise<void> => {
 
 export const refresh = async (req: Request, res: Response): Promise<void> => {
     const refreshToken = req.cookies.refreshToken
+    console.log(refreshToken)
 
     if (!refreshToken) {
         res.status(402).json({ "msg": "Please Sign In" })
@@ -55,13 +57,21 @@ export const refresh = async (req: Request, res: Response): Promise<void> => {
     try {
         const payload = verifyToken(refreshToken, env.SECRET_REFRESH)
 
-        if (!payload.email && payload.password) {
+        if (!payload.email || !payload.password) {
             res.status(400).json({ "msg": "Please Sign In Again" })
             return 
         } 
 
+        const userRepository = new UserRepository()
+        const user: any = await userRepository.checkUser(payload.email)
+
+        if (!user) {
+            res.status(404).json({ "msg": "Can't find user. Please sign in again." })
+            return
+        }
+
         const newAccessToken = createToken(payload.email, payload.password, payload.userid, env.SECRET_ACCESS)
-        res.status(200).json({accessToken: newAccessToken, userid: payload.userid})
+        res.status(200).json({accessToken: newAccessToken, ...user})
     } catch(err) {
         res.status(500).json(err)
     }
@@ -84,8 +94,24 @@ export const signOut = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+export const getFriendRequests = async (req: Request, res: Response) => {
+    const userid: any = req.headers['x-user-id']
+
+    if (!userid) {
+        res.status(400).json({ "msg": "Missing fields" })
+        return
+    }
+
+    try {
+        const friendReqs = await userService.getFriendRequests(userid)
+        res.status(200).json(friendReqs)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
 export const sendFriendRequest = async (req: Request, res: Response) => {
-    const { senderid, senderName, receiverid, receiverName } = req.body
+    const { senderid, senderProfilePic, senderName, receiverid, receiverProfilePic, receiverName } = req.body
     const userid = req.headers['x-user-id']
 
     if (!senderid || !senderName || !receiverid || !receiverName) {
@@ -104,7 +130,7 @@ export const sendFriendRequest = async (req: Request, res: Response) => {
     }
 
     try {
-        const newFriendRequest = await userService.sendFriendRequest(senderid, senderName, receiverid, receiverName)
+        const newFriendRequest = await userService.sendFriendRequest(senderid, senderProfilePic, senderName, receiverid, receiverProfilePic, receiverName)
 
         if (!newFriendRequest) {
             res.status(404).json({ "msg": "Can't not find the receiver user" })

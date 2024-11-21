@@ -1,33 +1,23 @@
 'use client'
 
 import { useState, useContext } from "react"
-import { StoreContext } from "@/app/providers/ReactQueryProvider"
-import {
-  Search,
-  Home,
-  Users,
-  PlaySquare,
-  Store,
-  Users2,
-  Bell,
-  Menu,
-  MessageCircle,
-} from "lucide-react"
+import {Search, Home, Users, PlaySquare, Store, Users2, Bell, Menu, MessageCircle } from "lucide-react"
 import Image from "next/image"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import DefaultProfilePicture from "./profilePicture"
+import { redirect } from "next/navigation"
 
-export default function MainMenu() {
-  const [activeTab, setActiveTab] = useState("home")
-  const { userContext } = useContext(StoreContext)
+export default function MainMenu({userContext}: any) {
+  // const [activeTab,  setActiveTab] = useState("home")
+  // const { userContext } = useContext(StoreContext)
 
   return (
     <div className="flex h-14 mb-4 items-center justify-between px-4 border-b bg-background">
       {/* Left section */}
       <div className="flex items-center gap-2 min-w-[300px]">
-        <Button variant="ghost" size="icon" className="rounded-full">
+        <Button variant="ghost" size="icon" className="rounded-full" onPointerDown={ () => redirect('/') }>
           <Image
             src="/placeholder.svg?height=40&width=40"
             alt="Facebook"
@@ -52,42 +42,42 @@ export default function MainMenu() {
           <Button
             variant="ghost"
             size="lg"
-            className={`h-14 px-10 ${activeTab === "home" ? "border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("home")}
+            className={`h-14 px-10`}
+            onClick={() => redirect('/')}
           >
-            <Home className={`w-6 h-6 ${activeTab === "home" ? "text-primary" : "text-muted-foreground"}`} />
+            <Home className={`w-6 h-6`} />
           </Button>
           <Button
             variant="ghost"
             size="lg"
-            className={`h-14 px-10 ${activeTab === "friends" ? "border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("friends")}
+            className={`h-14 px-10`}
+            onClick={() => redirect('/friends/requests')}
           >
-            <Users className={`w-6 h-6 ${activeTab === "friends" ? "text-primary" : "text-muted-foreground"}`} />
+            <Users className={`w-6 h-6`} />
           </Button>
           <Button
             variant="ghost"
             size="lg"
-            className={`h-14 px-10 ${activeTab === "video" ? "border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("video")}
+            className={`h-14 px-10`}
+            onClick={() => redirect('/')}
           >
-            <PlaySquare className={`w-6 h-6 ${activeTab === "video" ? "text-primary" : "text-muted-foreground"}`} />
+            <PlaySquare className={`w-6 h-6`} />
           </Button>
           <Button
             variant="ghost"
             size="lg"
-            className={`h-14 px-10 ${activeTab === "marketplace" ? "border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("marketplace")}
+            className={`h-14 px-10`}
+            onClick={() => 1}
           >
-            <Store className={`w-6 h-6 ${activeTab === "marketplace" ? "text-primary" : "text-muted-foreground"}`} />
+            <Store className={`w-6 h-6`} />
           </Button>
           <Button
             variant="ghost"
             size="lg"
-            className={`h-14 px-10 ${activeTab === "groups" ? "border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("groups")}
+            className={`h-14 px-10`}
+            onClick={() => 1}
           >
-            <Users2 className={`w-6 h-6 ${activeTab === "groups" ? "text-primary" : "text-muted-foreground"}`} />
+            <Users2 className={`w-6 h-6`} />
           </Button>
         </div>
       </div>

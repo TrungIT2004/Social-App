@@ -1,7 +1,7 @@
 'use client'
 
-import { useContext, useEffect } from 'react'
-import { StoreContext } from '@/app/providers/ReactQueryProvider'
+// import { useContext, useEffect } from 'react'
+// import { StoreContext } from '@/app/providers/ReactQueryProvider'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -19,7 +19,7 @@ const schema = yup.object().shape({
  
 
 export default function LoginForm() {
-  const { userContext, setUserContext } = useContext(StoreContext)
+  // const { userContext, setUserContext } = useContext(StoreContext)
   const router = useRouter()
 
   const { register, handleSubmit, formState: { errors } } = useForm({
@@ -37,10 +37,13 @@ export default function LoginForm() {
         body: JSON.stringify(data)
       })
 
-      return res.json()
+      let userContext = await res.json()
+      console.log(userContext)
+      return userContext
     },
-    onSuccess: (data) => {
-      setUserContext(data)
+    onSettled: (data) => {
+      console.log(data)
+      // setUserContext(data)
       router.push('/')
     }
   })

@@ -4,7 +4,6 @@ import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import rateLimit from 'express-rate-limit';
 
-
 const app = express()
 
 const limiter = rateLimit({
@@ -17,8 +16,8 @@ const limiter = rateLimit({
 app.use(express.json())
 
 app.use(cors({
-    origin: 'http://localhost:3001',
-    credentials: true,
+    origin: 'http://localhost:3001', // Allow requests from the client origin
+    credentials: true, // Allow credentials (cookies, authorization headers)
 }))
 
 app.use(helmet())

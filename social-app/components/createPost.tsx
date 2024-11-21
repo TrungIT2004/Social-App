@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { StoreContext } from "@/app/providers/ReactQueryProvider"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -21,8 +20,8 @@ import {
 import { Camera, Users, Smile, MapPin, Gift, MoreHorizontal, X, Globe, Lock, UserCircle2, Image as ImageIcon } from "lucide-react"
 import DefaultProfilePicture from "./profilePicture"
 
-export default function Component() {
-  const { userContext } = React.useContext(StoreContext)
+export default function Component({userContext}: any) {
+  // const { userContext } = React.useContext(StoreContext)
   const [privacy, setPrivacy] = React.useState("Chỉ mình tôi")
   const [images, setImages] = React.useState<File[]>([])
   const privacyRef = React.useRef<HTMLButtonElement>(null)
