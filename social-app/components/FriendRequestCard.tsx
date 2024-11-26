@@ -10,8 +10,8 @@ interface FriendRequestProps {
   senderid: String;
 }
 
-export const FriendRequest = ({name, mutualFriends, imageUrl, userContext, requestid, senderid}: FriendRequestProps) => {
-
+export const FriendRequest = ({ name, mutualFriends, imageUrl, userContext, requestid, senderid }: FriendRequestProps) => {
+  
   return (
     <div className="bg-white rounded-lg overflow-hidden w-full flex flex-col shadow-sm">
       <div className="relative w-full aspect-square bg-neutral-100">

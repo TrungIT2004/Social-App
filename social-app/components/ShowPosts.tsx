@@ -8,8 +8,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Heart, MessageCircle, Share2 } from "lucide-react"
-import DefaultProfilePicture from '@/components/profilePicture'
 import { ProfileBadge } from './ProfileBadge'
+
 export default function ShowPosts({ userContext }: any) {
   const queryClient = useQueryClient()
   const textInputRef = useRef<any>(null)
@@ -131,7 +131,9 @@ export default function ShowPosts({ userContext }: any) {
               <ProfileBadge 
                 imageUrl={post.profilepic} 
                 name={post.username}
+                userid={post.userid}
                 status="online"
+                userContext={userContext}
                 mutualFriends={[]}
               />
               <div>
@@ -193,8 +195,10 @@ export default function ShowPosts({ userContext }: any) {
               
               <form onSubmit={handleComment} className="flex w-full gap-2">
                 <ProfileBadge 
-                  imageUrl={userContext?.profilepic || "/placeholder.svg"}
-                  name={userContext?.username || "User"}
+                  imageUrl={post?.profilepic || "/placeholder.svg"}
+                  name={post?.username || "User"}
+                  userid={post?.userid}
+                  userContext={userContext}
                   status="online"
                 />
                 <div className="flex flex-col w-full gap-2 border border-black-900 rounded-full p-2">

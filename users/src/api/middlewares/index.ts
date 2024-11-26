@@ -1,8 +1,8 @@
-import { Request, Response } from "express"
+import { Request, Response, NextFunction } from "express"
 import { verifyToken } from "../../utils"
 import { env } from "../../configs/config"
 
-export const authorizeToken = async (req: any, res: Response, next: any) => {
+export const authorizeToken = async (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers['authorization']
     if (authHeader) {
         const token = authHeader.split(' ')[1]

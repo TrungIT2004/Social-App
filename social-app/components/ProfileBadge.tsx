@@ -1,5 +1,6 @@
 'use client'
 
+import { useMutation, useQuery } from "@tanstack/react-query"
 import React, { useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import DefaultProfilePicture from "./profilePicture"
@@ -7,12 +8,53 @@ import DefaultProfilePicture from "./profilePicture"
 interface ProfileBadgeProps {
   imageUrl?: string
   name?: string
+  userid: string
+  userContext: any
   mutualFriends?: string[]
   status?: "online" | "offline"
 }
 
-export const ProfileBadge = ({ imageUrl='', name='', mutualFriends = [], status = "offline" }: ProfileBadgeProps) => {
+export const ProfileBadge = ({ imageUrl='', name='', userid, userContext, mutualFriends = [], status = "offline" }: ProfileBadgeProps) => {
   const [isHovered, setIsHovered] = useState(false)
+
+  const {data, isLoading} = useQuery({
+    queryKey: [`friend-requests/${userid}`],
+    queryFn: async () => {
+      const res = await fetch('http://localhost:3000/v1/friends/check-req', {
+        method: "GET",
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${userContext?.accessToken}`,
+          'X-User-ID': userContext?.userid,
+          'X-User2-ID': userid
+        },
+      })
+
+      return await res.json()
+    }
+  })
+
+  console.log(data)
+
+  const sendFriendRequestMutation = useMutation({
+    mutationFn: async () => {
+      const res = await fetch('http://localhost:3000/v1/friends/send-request', {
+        method: "POST",
+        headers: {
+          'Content-Type': "application/json",
+          'Authorization': `Bearer ${userContext?.accessToken}`,
+          'X-User-ID': userContext?.userid
+        },
+        body: JSON.stringify({
+          senderid: userContext?.userid,
+          receiverid: userid,
+          status: "pending"
+        })
+      })
+
+      return await res.json()
+    }
+  })
     
   return (
     <div className="relative inline-block z-50 group">
@@ -57,8 +99,17 @@ export const ProfileBadge = ({ imageUrl='', name='', mutualFriends = [], status 
               </div>
             </div>
             <div className="mt-3 flex gap-2">
-              <button className="flex-1 rounded-md bg-[#0866FF] px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#0756D3]">
-                Kết bạn
+              <button onPointerDown={ () => sendFriendRequestMutation.mutate() } className="flex-1 rounded-md bg-[#0866FF] px-3 py-1.5 text-sm font-semibold text-white transition-colors hover:bg-[#0756D3]">
+                {!data 
+  ? 'Kết bạn' 
+  : (data.status === 'accepted' 
+    ? 'Bạn bè' 
+    : (data.status === 'pending' && data.senderid === userContext?.userid 
+      ? 'Đã gửi lời mời' 
+      : (data.status === 'pending' && data.receiverid === userContext?.userid 
+        ? 'Phản hồi' 
+        : '')))}
+
               </button>
               <button className="flex-1 rounded-md bg-gray-100 px-3 py-1.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-200">
                 Nhắn tin

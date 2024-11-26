@@ -19,7 +19,7 @@ export default function MainMenu({userContext}: any) {
       <div className="flex items-center gap-2 min-w-[300px]">
         <Button variant="ghost" size="icon" className="rounded-full" onPointerDown={ () => redirect('/') }>
           <Image
-            src="/placeholder.svg?height=40&width=40"
+            src="/facebook-logo.webp"
             alt="Facebook"
             width={40}
             height={40}

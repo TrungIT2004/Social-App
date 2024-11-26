@@ -27,7 +27,7 @@ export default async function Component() {
   console.log('Home Page')
 
   return (
-    <div className='w-full flex flex-wrap flex-col'> 
+    <div className='w-full  flex flex-wrap flex-col'> 
       {/* <MainMenu userContext={userContext} /> */}
 
       <CreatePost userContext={userContext} />

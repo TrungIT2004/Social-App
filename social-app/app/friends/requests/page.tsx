@@ -22,6 +22,7 @@ const FriendRequests = async () => {
   })
 
   const friendRequestList = await res.json()
+  console.log(friendRequestList)
 
   console.log('Friends Requests')
 
@@ -37,12 +38,12 @@ const FriendRequests = async () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           {friendRequestList?.map((request: any) => (
             <FriendRequest
-              key={request._id}
-              name={request.senderName}
+              key={request.requestid}
+              name={request.sendername}
               mutualFriends={Number(0)}
-              imageUrl={request.senderProfilePic}
+              imageUrl={request.senderprofilepic}
               userContext={userContext}
-              requestid={request._id}
+              requestid={request.requestid}
               senderid={request.senderid}
             />
           ))}

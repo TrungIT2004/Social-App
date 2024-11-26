@@ -119,7 +119,7 @@ export default function Component({userContext}: any) {
   }
 
   return (
-    <div className="w-full max-w-2xl mx-auto bg-background/80 backdrop-blur-sm">
+    <div className="w-full max-w-2xl mb-4 mx-auto bg-background/80 backdrop-blur-sm">
       <Dialog>
         <DialogTrigger asChild>
           <div className="w-full max-w-xl rounded-lg bg-background p-4 shadow">
